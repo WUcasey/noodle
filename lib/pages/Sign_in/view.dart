@@ -14,7 +14,7 @@ import 'package:rive/rive.dart';
 class SignInPage extends GetView<SignInController> {
   const SignInPage({Key? key}):super(key:key);
   
-
+  //nickname
   Widget FirstPage() {
     return Stack(
       alignment: Alignment.topCenter,
@@ -47,6 +47,8 @@ class SignInPage extends GetView<SignInController> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: TextField(
+                      //controller 取得nickname
+                      controller: controller.NicknameController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -62,7 +64,7 @@ class SignInPage extends GetView<SignInController> {
                         color: AppColors.PrimaryText,
                         letterSpacing: 1.0,
                         fontWeight: FontWeight.w600,
-                        fontSize:13.0.sp
+                        fontSize:11.0.sp
                       ),
                     ),
                   ),
@@ -84,6 +86,7 @@ class SignInPage extends GetView<SignInController> {
     );
   }
   
+  //date
   Widget SecondPage(BuildContext context){
     return Stack(
       alignment: Alignment.topCenter,
@@ -98,9 +101,14 @@ class SignInPage extends GetView<SignInController> {
           child: Column(
             children: [
               GestureDetector(
-                onTap: () {
-                  DatePicker.showDatePicker(
+                onTap: () async {
+                  await DatePicker.showDatePicker(
                     context,
+                    onChanged: (value){
+                      if(value.toString().isNotEmpty){
+                        controller.ChooseDate(value);
+                      }
+                    },
                     showTitleActions: true,
                     maxTime: DateTime(2024, 12, 31),
                     minTime: DateTime(1980, 1, 1),
@@ -148,7 +156,18 @@ class SignInPage extends GetView<SignInController> {
                   textAlign: TextAlign.center,
                   softWrap: true,
                 ),
-              )
+              ), 
+              Obx(() =>Text(
+                controller.Birthday.value.toString().substring(0,10),
+                style: TextStyle(
+                  color: AppColors.PrimaryText,
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.w600,
+                  fontSize:11.0.sp,
+                ),
+                textAlign: TextAlign.center,
+              ))
+
             ],
           ),
         ),
@@ -166,6 +185,7 @@ class SignInPage extends GetView<SignInController> {
     
   }
 
+  //whisper
   Widget ThirdPage(){
     return Stack(
       alignment: Alignment.topCenter,
@@ -198,6 +218,7 @@ class SignInPage extends GetView<SignInController> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15),
                     child: TextField(
+                      controller: controller.WhisperController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -213,7 +234,7 @@ class SignInPage extends GetView<SignInController> {
                         color: AppColors.PrimaryText,
                         letterSpacing: 1.0,
                         fontWeight: FontWeight.w600,
-                        fontSize:13.0.sp
+                        fontSize:11.0.sp
                       ),
                     ),
                   ),
@@ -265,7 +286,12 @@ class SignInPage extends GetView<SignInController> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: ElevatedButton(
-                    onPressed: ()=>Get.offAllNamed((AppRoutes.Home)),
+                    onPressed: (){
+                      // print(controller.NicknameController.text);
+                      // print(controller.WhisperController.text);
+                      // print(controller.Birthday.value);
+                      controller.checkData(controller.NicknameController.text);
+                    },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
                       backgroundColor:AppColors.Haveyorange,
