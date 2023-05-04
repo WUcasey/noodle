@@ -24,7 +24,7 @@ class SignInController extends GetxController{
     }
   }
   //check info
-  void checkData(String name){
+  void checkData(){
     if(NicknameController.text.isNotEmpty && Birthday.value.isBefore(DateTime.now()) && WhisperController.text.isNotEmpty){
       print("ok info complete");
       // Get.offAllNamed((AppRoutes.Home));

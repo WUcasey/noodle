@@ -290,7 +290,7 @@ class SignInPage extends GetView<SignInController> {
                       // print(controller.NicknameController.text);
                       // print(controller.WhisperController.text);
                       // print(controller.Birthday.value);
-                      controller.checkData(controller.NicknameController.text);
+                      controller.checkData();
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
