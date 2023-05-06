@@ -12,7 +12,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 class DiaryPage extends GetView<DiaryController>{
   const DiaryPage({Key? key}):super(key:key);
 
-  Widget _Diary(BuildContext context,String title,String content,DateTime date,int status){
+  Widget _Diary(BuildContext context,String title,String content,String img,DateTime date,int status){
     return Stack(
       children:[
         Container(
@@ -75,7 +75,7 @@ class DiaryPage extends GetView<DiaryController>{
               GestureDetector(
                 onTap: () {
                   if(status==1){
-                    ShowContent(context,title,content,date);
+                    ShowContent(context,title,content,img,date);
                   }
                 },
                 child: Padding(
@@ -150,13 +150,13 @@ class DiaryPage extends GetView<DiaryController>{
   @override
   Widget build(BuildContext context){
     List<Widget> diary=[
-      _Diary(context,controller.diary_title,controller.diary_content, controller.date,controller.status_unlock),
-      _Diary(context,controller.diary_title,controller.diary_content, controller.date,controller.status_unlock),
-      _Diary(context,controller.diary_title,controller.diary_content, controller.date,controller.status_unlock),
-      _Diary(context,controller.diary_title,controller.diary_content, controller.date,controller.status_unlock),
-      _Diary(context,controller.diary_title,controller.diary_content, controller.date,controller.status_lock),
-      _Diary(context,controller.diary_title,controller.diary_content, controller.date,controller.status_lock),
-      _Diary(context,controller.diary_title,controller.diary_content, controller.date,controller.status_lock),
+      _Diary(context,controller.diary_title,controller.diary_content,controller.img_url, controller.date,controller.status_unlock),
+      _Diary(context,controller.diary_title,controller.diary_content,controller.img_url, controller.date,controller.status_unlock),
+      _Diary(context,controller.diary_title,controller.diary_content,controller.img_url,controller.date,controller.status_unlock),
+      _Diary(context,controller.diary_title,controller.diary_content,controller.img_url, controller.date,controller.status_unlock),
+      _Diary(context,controller.diary_title,controller.diary_content,controller.img_url, controller.date,controller.status_lock),
+      _Diary(context,controller.diary_title,controller.diary_content,controller.img_url, controller.date,controller.status_lock),
+      _Diary(context,controller.diary_title,controller.diary_content,controller.img_url, controller.date,controller.status_lock),
     ];
     return Scaffold(
       backgroundColor:AppColors.PrimaryColor_1,
@@ -196,7 +196,7 @@ class DiaryPage extends GetView<DiaryController>{
 }
 
 //點選日記內容跳出
-ShowContent(BuildContext context,String title, String content, DateTime date) {
+ShowContent(BuildContext context,String title, String content, String img,DateTime date) {
   return showDialog(
     context: context, 
     builder: (context){
@@ -266,15 +266,23 @@ ShowContent(BuildContext context,String title, String content, DateTime date) {
                     height: 660*0.4.h,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
-                      child: Text(
-                          content+content,
-                          overflow: TextOverflow.clip,
-                          style: TextStyle(
-                          color: AppColors.PrimaryText,
-                          letterSpacing: 2.0,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12.0.sp
-                        ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 180.h,
+                            child: Image.asset(img,fit: BoxFit.scaleDown),
+                          ),
+                          Text(
+                              content+content,
+                              overflow: TextOverflow.clip,
+                              style: TextStyle(
+                              color: AppColors.PrimaryText,
+                              letterSpacing: 2.0,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.0.sp
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

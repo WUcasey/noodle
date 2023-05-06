@@ -27,7 +27,10 @@ class ClothesController extends GetxController{
   void change_food_1(String data){
     food_1.value=data;
   }
+
   
+
+
   final state = ClothesState();
 
   @override
