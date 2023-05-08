@@ -1,8 +1,11 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:noodle/common/routes/routes.dart';
 import 'package:noodle/common/value/ColorStandar.dart';
 import 'package:noodle/pages/Sign_in/state.dart';
+import 'package:noodle/common/DBMS/names.dart';
 import 'package:neo4driver/neo4driver.dart';
 
 class SignInController extends GetxController {
@@ -32,18 +35,31 @@ class SignInController extends GetxController {
         WhisperController.text.isNotEmpty) {
       print("ok info complete");
       Get.offAllNamed((AppRoutes.Home));
-      //database connect
+      //database connect once to add a new user
+      late NeoClient newConnect;
       try {
-        NeoClient.withAuthorization(
-          username: 'neo4j',
-          password: 'EANSpNiLGgnXTPj8OTQE9HSXJ0b4a2sIVU2b6D44KJs',
-          databaseAddress: 'neo4j+s://73b8649a.databases.neo4j.io',
-          databaseName: 'Instance01',
+        newConnect = NeoClient.withAuthorization(
+          username: DBnames.UsrDBUsrName,
+          password: DBnames.UsrDBPwd,
+          databaseAddress: DBnames.UsrDBAdress,
+          databaseName: DBnames.USrDBName,
         );
-        print("connect to graph database successful.");
+        print("connect to graph database successfully.");
       } catch (error) {
-        print("connect to graph database fail.");
-      }
+        print("failed to connect to graph database.");
+      } finally {}
+      try {
+        newConnect.createNode(labels: [
+          "person"
+        ], properties: {
+          '名': NicknameController.text,
+        });
+        // final response = newConnect.findNodeById(15);
+        // print(response.toJS);
+        print("adding new node successfully");
+      } catch (error) {
+        print("failed to add new node.");
+      } finally {}
     } else {
       //info not complete
       Get.snackbar(
