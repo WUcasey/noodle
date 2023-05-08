@@ -33,12 +33,17 @@ class SignInController extends GetxController {
       print("ok info complete");
       Get.offAllNamed((AppRoutes.Home));
       //database connect
-      NeoClient.withAuthorization(
-        username: 'neo4j',
-        password: 'EANSpNiLGgnXTPj8OTQE9HSXJ0b4a2sIVU2b6D44KJs',
-        databaseAddress: 'neo4j+s://73b8649a.databases.neo4j.io',
-        databaseName: 'Instance01',
-      );
+      try {
+        NeoClient.withAuthorization(
+          username: 'neo4j',
+          password: 'EANSpNiLGgnXTPj8OTQE9HSXJ0b4a2sIVU2b6D44KJs',
+          databaseAddress: 'neo4j+s://73b8649a.databases.neo4j.io',
+          databaseName: 'Instance01',
+        );
+        print("connect to graph database successful.");
+      } catch (error) {
+        print("connect to graph database fail.");
+      }
     } else {
       //info not complete
       Get.snackbar(
