@@ -5,8 +5,12 @@ import 'package:get/get.dart';
 import 'package:noodle/common/routes/routes.dart';
 import 'package:noodle/common/value/ColorStandar.dart';
 import 'package:noodle/pages/Sign_in/state.dart';
+//  GDB connect package
 import 'package:noodle/common/DBMS/names.dart';
+import 'package:noodle/common/DBMS/query.dart';
 import 'package:neo4driver/neo4driver.dart';
+// import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignInController extends GetxController {
   SignInController();
@@ -36,7 +40,12 @@ class SignInController extends GetxController {
       print("ok info complete");
       Get.offAllNamed((AppRoutes.Home));
       //database connect once to add a new user
-      late NeoClient newConnect;
+      try {
+        addNewUsr(NicknameController.text, WhisperController.text);
+      } catch (error) {
+        print(error);
+      } finally {}
+      /*late NeoClient newConnect;
       try {
         newConnect = NeoClient.withAuthorization(
           username: DBnames.UsrDBUsrName,
@@ -54,12 +63,11 @@ class SignInController extends GetxController {
         ], properties: {
           '名': NicknameController.text,
         });
-        // final response = newConnect.findNodeById(15);
-        // print(response.toJS);
+
         print("adding new node successfully");
       } catch (error) {
         print("failed to add new node.");
-      } finally {}
+      } finally {}*/
     } else {
       //info not complete
       Get.snackbar(

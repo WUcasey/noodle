@@ -47,7 +47,8 @@ dependencies:
   intl: ^0.18.0
 
   ## link to graph database neo4j
-  neo4driver: any
+  neo4driver: ^1.0.7
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:
