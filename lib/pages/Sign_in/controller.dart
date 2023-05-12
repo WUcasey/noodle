@@ -6,11 +6,11 @@ import 'package:noodle/common/routes/routes.dart';
 import 'package:noodle/common/value/ColorStandar.dart';
 import 'package:noodle/pages/Sign_in/state.dart';
 //  GDB connect package
-import 'package:noodle/common/DBMS/names.dart';
 import 'package:noodle/common/DBMS/query.dart';
-import 'package:neo4driver/neo4driver.dart';
+// import 'package:neo4driver/neo4driver.dart';
+// import 'package:noodle/common/DBMS/names.dart';
 // import 'package:http/http.dart' as http;
-import 'dart:convert';
+// import 'dart:convert';
 
 class SignInController extends GetxController {
   SignInController();
@@ -40,34 +40,13 @@ class SignInController extends GetxController {
       print("ok info complete");
       Get.offAllNamed((AppRoutes.Home));
       //database connect once to add a new user
+      handSake();
       try {
         addNewUsr(NicknameController.text, WhisperController.text);
+        print("connect to graph database successfully.");
       } catch (error) {
         print(error);
       } finally {}
-      /*late NeoClient newConnect;
-      try {
-        newConnect = NeoClient.withAuthorization(
-          username: DBnames.UsrDBUsrName,
-          password: DBnames.UsrDBPwd,
-          databaseAddress: DBnames.UsrDBAdress,
-          databaseName: DBnames.USrDBName,
-        );
-        print("connect to graph database successfully.");
-      } catch (error) {
-        print("failed to connect to graph database.");
-      } finally {}
-      try {
-        newConnect.createNode(labels: [
-          "person"
-        ], properties: {
-          '名': NicknameController.text,
-        });
-
-        print("adding new node successfully");
-      } catch (error) {
-        print("failed to add new node.");
-      } finally {}*/
     } else {
       //info not complete
       Get.snackbar(

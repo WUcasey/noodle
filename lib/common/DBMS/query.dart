@@ -2,40 +2,49 @@ import 'dart:async';
 import 'dart:convert';
 
 // import 'package:neo4driver/neo4driver.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-// import 'package:flutter/material.dart';
+
+Future<void> handSake() async {
+  final response = await http.get(Uri.parse('http://localhost:7474'));
+  if (response.statusCode == 200) {
+    print("connect to graph database successfully.");
+    print(jsonDecode(response.body));
+  } else {
+    throw Exception('fail to connect');
+  }
+}
 
 Future<void> addNewUsr(String nickName, String whisper) async {
   final response = await http.post(
-    Uri.parse('neo4j+s://73b8649a.databases.neo4j.io'),
+    Uri.parse('http://localhost/db/neo4j/tx'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'X-Stream': 'true',
-      'Authorization':
-          'Basic bmVvNGo6RUFOU3BOaUxHZ25YVFBqOE9UUUU5SFNYSjBiNGEyc0lWVTJiNkQ0NEtKcw=='
+      'Authorization': 'Basic bmVvNGo6MjAyM2NzaWVDR1U='
     },
     body: jsonEncode(<String, List<Map<String, Object>>>{
       "statements": [
         {
-          "statement": "CREATE (User:person \$props) ",
-          "parameters": {
-            "props": {
-              "名": nickName,
-            }
-          }
+          "statement": "CREATE (User:Person {名: '黃'}) return User ",
+          // "parameters": {
+          //   "props": {
+          //     "名": nickName,
+          //   }
+          // }
         },
-        {
-          "statement": "CREATE (whisper:Preference \$props)",
-          "parameters": {
-            "props": {"敘述": whisper}
-          }
-        },
-        {
-          "statement": "CREATE (User)-[:喜好\$props]->(whisper) ",
-          "parameters": {
-            "props": {"面向": "聊天主題"}
-          }
-        }
+        // {
+        //   "statement": "CREATE (whisper:Preference \$props)",
+        //   "parameters": {
+        //     "props": {"敘述": whisper}
+        //   }
+        // },
+        // {
+        //   "statement": "CREATE (User)-[:喜好\$props]->(whisper) ",
+        //   "parameters": {
+        //     "props": {"面向": "聊天主題"}
+        //   }
+        // }
       ]
     }),
   );
