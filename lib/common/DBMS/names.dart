@@ -1,4 +1,5 @@
 class DBnames {
+  static var UsrId;
   //for neo4drive packsge
   static const UsrDBUsrName = "neo4j";
   static const UsrDBPwd = "2023csieCGU";

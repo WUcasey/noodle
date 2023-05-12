@@ -40,12 +40,10 @@ class SignInController extends GetxController {
       print("ok info complete");
       Get.offAllNamed((AppRoutes.Home));
       //database connect once to add a new user
-      handSake();
       try {
-        addNewUsr(NicknameController.text, WhisperController.text);
-        print("connect to graph database successfully.");
-      } catch (error) {
-        print(error);
+        // handSake();
+        addNewUsr(
+            NicknameController.text, Birthday.value, WhisperController.text);
       } finally {}
     } else {
       //info not complete

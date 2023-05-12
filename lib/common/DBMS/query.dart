@@ -1,36 +1,41 @@
 import 'dart:async';
 import 'dart:convert';
 
-// import 'package:neo4driver/neo4driver.dart';
-import 'package:get/get.dart';
+import 'package:noodle/common/DBMS/names.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> handSake() async {
-  final response = await http.get(Uri.parse('http://localhost:7474'));
+  final response = await http
+      .get(Uri.parse('http://localhost:7474'), headers: <String, String>{
+    'Content-Type': 'application/json; charset=UTF-8',
+    'X-Stream': 'true',
+    'Authorization': 'Basic bmVvNGo6MjAyM2NzaWVDR1U='
+  });
   if (response.statusCode == 200) {
-    print("connect to graph database successfully.");
+    print("can connect to graph database.");
     print(jsonDecode(response.body));
   } else {
-    throw Exception('fail to connect');
+    print('fail to connect');
+    throw Exception();
   }
 }
 
-Future<void> addNewUsr(String nickName, String whisper) async {
+Future<void> addNewUsr(String nickName, var birth, String whisper) async {
+  print('hello');
   final response = await http.post(
-    Uri.parse('http://localhost/db/neo4j/tx'),
+    Uri.parse('http://localhost/db/neo4j/tx/commit'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'X-Stream': 'true',
-      'Authorization': 'Basic bmVvNGo6MjAyM2NzaWVDR1U='
+      'Authorization': 'Basic bmVvNGo6MjAyM2NzaWVDR1U=',
+      'access-mode': 'WRITE'
     },
     body: jsonEncode(<String, List<Map<String, Object>>>{
       "statements": [
         {
-          "statement": "CREATE (User:Person {名: '黃'}) return User ",
+          "statement": "CREATE (User:Person {名:'你好'}) return User ",
           // "parameters": {
-          //   "props": {
-          //     "名": nickName,
-          //   }
+          //   "props": {"名": nickName}
           // }
         },
         // {
@@ -48,24 +53,22 @@ Future<void> addNewUsr(String nickName, String whisper) async {
       ]
     }),
   );
-
-  if (response.statusCode == 201) {
-    // If the server did return a 201 CREATED response,
-    // then parse the JSON.
-    // return person.fromJson(jsonDecode(response.body));
+  print(response.body);
+  if (response.statusCode == 200) {
+    DBnames.UsrId = jsonDecode(response.body)['meta']['id'];
+    print("Success to add new node");
+    print(response.body);
   } else {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
     throw Exception('Failed to add new node');
   }
 }
 
-class person {
-  final String usrName;
-  final String whisper;
+// class person {
+//   final String usrName;
+//   final String whisper;
 
-  const person({required this.usrName, required this.whisper});
-  factory person.fromJson(Map<String, dynamic> json) {
-    return person(usrName: json['名'], whisper: json['perfer']);
-  }
-}
+//   const person({required this.usrName, required this.whisper});
+//   factory person.fromJson(Map<String, dynamic> json) {
+//     return person(usrName: json['名'], whisper: json['perfer']);
+//   }
+// }
